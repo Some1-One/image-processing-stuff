@@ -40,7 +40,7 @@ class Horizontal:
         return Vertical(*map(transpose, self.elements))
 
 class Tagged:
-    def __init__(self, tag, number, origin=(0,0), fill='rgb(255,0,0)', font='/usr/share/fonts/TTF/Hack-Regular-Nerd-Font-Complete.ttf', fontsize=32):
+    def __init__(self, tag, number, origin=(0,0), fill='rgb(255,0,0)', font='arial', fontsize=32):
         self.tag = tag
         self.number = number
         self.origin = origin
@@ -342,16 +342,25 @@ class Backend:
         def read(self, path):
             return np.array(self.PIL.Image.open(path))
 
-        def show(self, img, /, persist=False):
+        def show(self, img, persist=False):
             image = self.PIL.Image.fromarray(img)
             image.show()
+        
+        def save(self, img, path):
+            image = self.PIL.Image.fromarray(img)
+            image.save(path)
 
 def read(path):
     if not backend:
         raise Exception("No backend")
     return backend.read(path)
 
-def show(img, /, persist=False):
+def show(img, persist=False):
     if not backend:
         raise Exception("No backend")
     return backend.show(img, persist=persist)
+
+def save(img, path):
+    if not backend:
+        raise Exception("No backend")
+    return backend.save(img, path)
